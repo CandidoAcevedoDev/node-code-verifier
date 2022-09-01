@@ -1,22 +1,16 @@
-import express , { Express, Request, Response } from 'express'
-import dotenv from 'dotenv'
+import dotenv from 'dotenv';
+import server from './src/server';
+import { LogError, LogSuccess } from './src/utils/logger';
 
-// Configuration the .env file
+// * Configuration the .env file
 dotenv.config();
 
-// Create server
-const port: string | number = process.env.PORT || 5000
-const app: Express = express();
+const PORT = process.env.PORT || 8000;
 
-// Define the first route
-app.get("/", (req: Request, res: Response) => {
-    res.status(200).send('Hello world, I learning node express full backend')
-})
+// * Execute server
+server.listen(PORT, () => {
+	LogSuccess(`[SERVER ON]: Running in http://localhost:${PORT}/api`);
+});
 
-app.get("/hello", (req: Request, res: Response) => {
-    res.status(200).send('Hello world, I learning the route FULLSTACK')
-})
-
-// Execute   App and listen request port
-app.listen(port, () => console.log(`EXPRESS SERVER: Running the at http://localhost:${port}`))
-
+// * Control SERVER ERROR
+server.on('error', error => LogError(`[SERVER ERROR]: ${error}`));
